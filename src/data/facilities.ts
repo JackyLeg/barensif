@@ -34,4 +34,11 @@ export const facilities: Facility[] = [
       "Fasilitas pemantauan jaringan kampus dan infrastruktur server Universitas Trisakti.",
     image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000",
   },
+  {
+    id: 5,
+    title: "Ruang Development & Staff",
+    description:
+      "Area kerja kolaboratif pengembang perangkat lunak dan administrator sistem informasi.",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000",
+  },
 ];

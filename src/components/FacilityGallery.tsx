@@ -6,25 +6,37 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const FacilityGallery: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFading, setIsFading] = useState(false);
+  const [isSliding, setIsSliding] = useState(false);
+  const [direction, setDirection] = useState<"next" | "prev">("next");
 
-  const triggerAnimation = (newIndex: number) => {
-    if (isFading || newIndex === currentIndex) return;
-    setIsFading(true);
+  const handleNext = () => {
+    if (isSliding) return;
+    setDirection("next");
+    setIsSliding(true);
     setTimeout(() => {
-      setCurrentIndex(newIndex);
-      setIsFading(false);
-    }, 200);
+      setCurrentIndex((prev) => (prev === facilities.length - 1 ? 0 : prev + 1));
+      setIsSliding(false);
+    }, 300);
   };
 
   const handlePrev = () => {
-    const newIdx = currentIndex === 0 ? facilities.length - 1 : currentIndex - 1;
-    triggerAnimation(newIdx);
+    if (isSliding) return;
+    setDirection("prev");
+    setIsSliding(true);
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev === 0 ? facilities.length - 1 : prev - 1));
+      setIsSliding(false);
+    }, 300);
   };
 
-  const handleNext = () => {
-    const newIdx = currentIndex === facilities.length - 1 ? 0 : currentIndex + 1;
-    triggerAnimation(newIdx);
+  const goToSlide = (index: number) => {
+    if (isSliding || index === currentIndex) return;
+    setDirection(index > currentIndex ? "next" : "prev");
+    setIsSliding(true);
+    setTimeout(() => {
+      setCurrentIndex(index);
+      setIsSliding(false);
+    }, 300);
   };
 
   const getFacility = (offset: number) => {
@@ -43,85 +55,126 @@ export const FacilityGallery: React.FC = () => {
         Ruangan dan Fasilitas
       </h3>
 
-      {/* Card Stacking Carousel */}
-      <div className="relative max-w-5xl mx-auto py-6 flex items-center justify-center min-h-[480px] overflow-hidden">
-        {/* Left Background Card (Previous) */}
-        <div
-          onClick={handlePrev}
-          className={`hidden sm:block absolute left-0 md:left-4 w-[280px] md:w-[320px] rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-60 scale-90 -translate-x-8 z-0 cursor-pointer transition-all duration-500 ease-out hover:opacity-90 hover:scale-95 ${
-            isFading ? "opacity-30 translate-x-4" : ""
-          }`}
-        >
-          <div className="h-56 bg-slate-800 overflow-hidden">
-            <img
-              src={prevFacility.image}
-              alt={prevFacility.title}
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            />
+      {/* Desktop 3-Card Carousel Display */}
+      <div className="hidden md:flex relative max-w-6xl mx-auto py-8 items-center justify-center min-h-[480px] overflow-hidden">
+        <div className="grid grid-cols-12 gap-6 items-center w-full max-w-5xl px-4">
+          
+          {/* 1. Left Card (Previous - 3 Cols) */}
+          <div
+            onClick={handlePrev}
+            className={`col-span-3 cursor-pointer rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-50 scale-95 transition-all duration-700 ease-in-out hover:opacity-75 hover:scale-98 ${
+              isSliding
+                ? direction === "next"
+                  ? "-translate-x-12 opacity-20"
+                  : "translate-x-12 opacity-80 scale-100"
+                : "translate-x-0"
+            }`}
+          >
+            <div className="h-48 bg-slate-800 overflow-hidden">
+              <img
+                src={prevFacility.image}
+                alt={prevFacility.title}
+                className="w-full h-full object-cover grayscale-[0.2]"
+              />
+            </div>
+            <div className="p-4 bg-[#004A91]">
+              <h4 className="font-bold text-base font-poppins mb-1 truncate text-white">
+                {prevFacility.title}
+              </h4>
+              <p className="text-xs text-blue-100/80 line-clamp-2 leading-relaxed">
+                {prevFacility.description}
+              </p>
+            </div>
           </div>
-          <div className="p-4 bg-[#004A91]">
-            <h4 className="font-bold text-lg font-poppins mb-1 truncate">
-              {prevFacility.title}
-            </h4>
-            <p className="text-xs text-blue-100 line-clamp-3 leading-relaxed">
-              {prevFacility.description}
-            </p>
-          </div>
-        </div>
 
-        {/* Center Main Focused Card */}
+          {/* 2. Center Focused Card (Current Active - 6 Cols) */}
+          <div
+            className={`col-span-6 z-20 rounded-2xl overflow-hidden shadow-2xl bg-white border-2 border-[#0067C5]/30 transition-all duration-700 ease-in-out transform hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(0,103,197,0.25)] ${
+              isSliding
+                ? direction === "next"
+                  ? "-translate-x-8 opacity-60 scale-95"
+                  : "translate-x-8 opacity-60 scale-95"
+                : "translate-x-0 opacity-100 scale-105"
+            }`}
+          >
+            <div className="h-64 sm:h-72 bg-slate-900 overflow-hidden relative group">
+              <img
+                src={currentFacility.image}
+                alt={currentFacility.title}
+                className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
+            </div>
+
+            <div className="p-6 text-center bg-white">
+              <h4 className="text-xl md:text-2xl font-extrabold font-poppins text-[#004A91] mb-2.5">
+                {currentFacility.title}
+              </h4>
+              <p className="text-slate-700 text-sm leading-relaxed font-semibold">
+                {currentFacility.description}
+              </p>
+            </div>
+          </div>
+
+          {/* 3. Right Card (Next - 3 Cols) */}
+          <div
+            onClick={handleNext}
+            className={`col-span-3 cursor-pointer rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-50 scale-95 transition-all duration-700 ease-in-out hover:opacity-75 hover:scale-98 ${
+              isSliding
+                ? direction === "next"
+                  ? "-translate-x-12 opacity-80 scale-100"
+                  : "translate-x-12 opacity-20"
+                : "translate-x-0"
+            }`}
+          >
+            <div className="h-48 bg-slate-800 overflow-hidden">
+              <img
+                src={nextFacility.image}
+                alt={nextFacility.title}
+                className="w-full h-full object-cover grayscale-[0.2]"
+              />
+            </div>
+            <div className="p-4 bg-[#004A91]">
+              <h4 className="font-bold text-base font-poppins mb-1 truncate text-white">
+                {nextFacility.title}
+              </h4>
+              <p className="text-xs text-blue-100/80 line-clamp-2 leading-relaxed">
+                {nextFacility.description}
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Mobile Single Card Display */}
+      <div className="block md:hidden max-w-sm mx-auto my-4">
         <div
-          className={`relative z-20 w-full max-w-[340px] sm:max-w-[390px] rounded-2xl overflow-hidden shadow-2xl bg-white border border-slate-200/90 transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,103,197,0.25)] ${
-            isFading ? "opacity-40 scale-95 blur-[1px]" : "opacity-100 scale-100 blur-0"
+          className={`rounded-2xl overflow-hidden shadow-xl bg-white border border-slate-200 transition-all duration-500 ${
+            isSliding ? "opacity-40 scale-95" : "opacity-100 scale-100"
           }`}
         >
-          <div className="h-64 sm:h-72 bg-slate-900 overflow-hidden relative group">
+          <div className="h-60 bg-slate-900">
             <img
               src={currentFacility.image}
               alt={currentFacility.title}
-              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+              className="w-full h-full object-cover"
             />
-            {/* Subtle Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-60" />
           </div>
 
-          <div className="p-6 text-center bg-white">
-            <h4 className="text-xl md:text-2xl font-bold font-poppins text-[#004A91] mb-3 transition-colors">
+          <div className="p-5 text-center bg-white">
+            <h4 className="text-lg font-bold font-poppins text-[#004A91] mb-2">
               {currentFacility.title}
             </h4>
-            <p className="text-slate-700 text-sm leading-relaxed font-medium">
+            <p className="text-slate-700 text-xs leading-relaxed font-medium">
               {currentFacility.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Right Background Card (Next) */}
-        <div
-          onClick={handleNext}
-          className={`hidden sm:block absolute right-0 md:right-4 w-[280px] md:w-[320px] rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-60 scale-90 translate-x-8 z-0 cursor-pointer transition-all duration-500 ease-out hover:opacity-90 hover:scale-95 ${
-            isFading ? "opacity-30 -translate-x-4" : ""
-          }`}
-        >
-          <div className="h-56 bg-slate-800 overflow-hidden">
-            <img
-              src={nextFacility.image}
-              alt={nextFacility.title}
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            />
-          </div>
-          <div className="p-4 bg-[#004A91]">
-            <h4 className="font-bold text-lg font-poppins mb-1 truncate">
-              {nextFacility.title}
-            </h4>
-            <p className="text-xs text-blue-100 line-clamp-3 leading-relaxed">
-              {nextFacility.description}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex items-center justify-center gap-4 mt-6">
+      {/* Navigation Controls (Chevron Buttons & Dot Indicators) */}
+      <div className="flex items-center justify-center gap-5 mt-6">
         <button
           onClick={handlePrev}
           className="p-3 rounded-full bg-[#0067C5] hover:bg-[#004A91] text-white shadow-md transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none"
@@ -134,7 +187,7 @@ export const FacilityGallery: React.FC = () => {
           {facilities.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => triggerAnimation(idx)}
+              onClick={() => goToSlide(idx)}
               className={`h-2.5 rounded-full transition-all duration-500 ${
                 idx === currentIndex
                   ? "w-8 bg-[#0067C5]"

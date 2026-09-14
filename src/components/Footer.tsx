@@ -47,14 +47,14 @@ export const Footer: React.FC = () => {
               <img
                 src="/Universitas-Trisakti-Logo.png"
                 alt="Universitas Trisakti Logo"
-                className="w-24 md:w-28 h-auto object-contain mb-3 drop-shadow-md"
+                className="w-24 md:w-28 h-auto object-contain mb-3 drop-shadow-md brightness-0 invert"
               />
-              <h3 className="font-poppins font-black text-lg tracking-[0.2em] text-white uppercase leading-tight">
+              {/* <h3 className="font-poppins font-black text-lg tracking-[0.2em] text-white uppercase leading-tight">
                 UNIVERSITAS
               </h3>
               <h3 className="font-poppins font-black text-lg tracking-[0.2em] text-white uppercase leading-tight">
                 TRISAKTI
-              </h3>
+              </h3> */}
             </div>
 
             {/* Social Media Circular Buttons */}

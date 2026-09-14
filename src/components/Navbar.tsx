@@ -9,7 +9,7 @@ const TrisaktiHeaderLogo: React.FC = () => (
     <img
       src="/Universitas-Trisakti-Logo.png"
       alt="Universitas Trisakti Logo"
-      className="h-9 w-auto object-contain"
+      className="h-9 w-auto object-contain brightness-0 invert"
     />
     <span className="text-[10px] md:text-xs font-black font-poppins text-white tracking-[0.15em] uppercase leading-tight">
       UNIVERSITAS<br />TRISAKTI

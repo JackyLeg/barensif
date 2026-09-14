@@ -23,11 +23,11 @@ export const Hero: React.FC = () => {
             <img
               src="/Universitas-Trisakti-Logo.png"
               alt="Universitas Trisakti Logo"
-              className="w-20 h-auto md:w-24 object-contain mb-3 drop-shadow-md"
+              className="w-20 h-auto md:w-24 object-contain mb-3 drop-shadow-md brightness-0 invert"
             />
-            <span className="font-poppins font-black text-sm md:text-base tracking-[0.25em] text-white uppercase">
+            {/* <span className="font-poppins font-black text-sm md:text-base tracking-[0.25em] text-white uppercase">
               UNIVERSITAS TRISAKTI
-            </span>
+            </span> */}
           </div>
 
           {/* Main Title BARENSIF */}

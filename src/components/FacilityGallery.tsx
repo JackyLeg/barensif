@@ -6,13 +6,25 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export const FacilityGallery: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFading, setIsFading] = useState(false);
+
+  const triggerAnimation = (newIndex: number) => {
+    if (isFading || newIndex === currentIndex) return;
+    setIsFading(true);
+    setTimeout(() => {
+      setCurrentIndex(newIndex);
+      setIsFading(false);
+    }, 200);
+  };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? facilities.length - 1 : prev - 1));
+    const newIdx = currentIndex === 0 ? facilities.length - 1 : currentIndex - 1;
+    triggerAnimation(newIdx);
   };
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev === facilities.length - 1 ? 0 : prev + 1));
+    const newIdx = currentIndex === facilities.length - 1 ? 0 : currentIndex + 1;
+    triggerAnimation(newIdx);
   };
 
   const getFacility = (offset: number) => {
@@ -32,17 +44,19 @@ export const FacilityGallery: React.FC = () => {
       </h3>
 
       {/* Card Stacking Carousel */}
-      <div className="relative max-w-5xl mx-auto py-6 flex items-center justify-center min-h-[460px] overflow-hidden">
+      <div className="relative max-w-5xl mx-auto py-6 flex items-center justify-center min-h-[480px] overflow-hidden">
         {/* Left Background Card (Previous) */}
         <div
           onClick={handlePrev}
-          className="hidden sm:block absolute left-0 md:left-4 w-[280px] md:w-[320px] rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-60 scale-90 -translate-x-8 z-0 cursor-pointer transition-all duration-500 hover:opacity-80"
+          className={`hidden sm:block absolute left-0 md:left-4 w-[280px] md:w-[320px] rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-60 scale-90 -translate-x-8 z-0 cursor-pointer transition-all duration-500 ease-out hover:opacity-90 hover:scale-95 ${
+            isFading ? "opacity-30 translate-x-4" : ""
+          }`}
         >
-          <div className="h-56 bg-slate-800">
+          <div className="h-56 bg-slate-800 overflow-hidden">
             <img
               src={prevFacility.image}
               alt={prevFacility.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
           <div className="p-4 bg-[#004A91]">
@@ -56,17 +70,23 @@ export const FacilityGallery: React.FC = () => {
         </div>
 
         {/* Center Main Focused Card */}
-        <div className="relative z-20 w-full max-w-[340px] sm:max-w-[380px] rounded-2xl overflow-hidden shadow-2xl bg-white border border-slate-200 transition-all duration-500 hover:shadow-2xl">
-          <div className="h-64 sm:h-72 bg-slate-900">
+        <div
+          className={`relative z-20 w-full max-w-[340px] sm:max-w-[390px] rounded-2xl overflow-hidden shadow-2xl bg-white border border-slate-200/90 transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(0,103,197,0.25)] ${
+            isFading ? "opacity-40 scale-95 blur-[1px]" : "opacity-100 scale-100 blur-0"
+          }`}
+        >
+          <div className="h-64 sm:h-72 bg-slate-900 overflow-hidden relative group">
             <img
               src={currentFacility.image}
               alt={currentFacility.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
             />
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-60" />
           </div>
 
           <div className="p-6 text-center bg-white">
-            <h4 className="text-xl md:text-2xl font-bold font-poppins text-[#004A91] mb-3">
+            <h4 className="text-xl md:text-2xl font-bold font-poppins text-[#004A91] mb-3 transition-colors">
               {currentFacility.title}
             </h4>
             <p className="text-slate-700 text-sm leading-relaxed font-medium">
@@ -78,13 +98,15 @@ export const FacilityGallery: React.FC = () => {
         {/* Right Background Card (Next) */}
         <div
           onClick={handleNext}
-          className="hidden sm:block absolute right-0 md:right-4 w-[280px] md:w-[320px] rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-60 scale-90 translate-x-8 z-0 cursor-pointer transition-all duration-500 hover:opacity-80"
+          className={`hidden sm:block absolute right-0 md:right-4 w-[280px] md:w-[320px] rounded-2xl overflow-hidden shadow-md bg-[#004A91] text-white opacity-60 scale-90 translate-x-8 z-0 cursor-pointer transition-all duration-500 ease-out hover:opacity-90 hover:scale-95 ${
+            isFading ? "opacity-30 -translate-x-4" : ""
+          }`}
         >
-          <div className="h-56 bg-slate-800">
+          <div className="h-56 bg-slate-800 overflow-hidden">
             <img
               src={nextFacility.image}
               alt={nextFacility.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
           <div className="p-4 bg-[#004A91]">
@@ -102,7 +124,7 @@ export const FacilityGallery: React.FC = () => {
       <div className="flex items-center justify-center gap-4 mt-6">
         <button
           onClick={handlePrev}
-          className="p-3 rounded-full bg-[#0067C5] hover:bg-[#004A91] text-white shadow-md transition-all hover:scale-110 active:scale-95"
+          className="p-3 rounded-full bg-[#0067C5] hover:bg-[#004A91] text-white shadow-md transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none"
           aria-label="Previous Facility"
         >
           <ChevronLeft className="w-6 h-6" />
@@ -112,8 +134,8 @@ export const FacilityGallery: React.FC = () => {
           {facilities.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
+              onClick={() => triggerAnimation(idx)}
+              className={`h-2.5 rounded-full transition-all duration-500 ${
                 idx === currentIndex
                   ? "w-8 bg-[#0067C5]"
                   : "w-2.5 bg-slate-300 hover:bg-slate-400"
@@ -125,7 +147,7 @@ export const FacilityGallery: React.FC = () => {
 
         <button
           onClick={handleNext}
-          className="p-3 rounded-full bg-[#0067C5] hover:bg-[#004A91] text-white shadow-md transition-all hover:scale-110 active:scale-95"
+          className="p-3 rounded-full bg-[#0067C5] hover:bg-[#004A91] text-white shadow-md transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none"
           aria-label="Next Facility"
         >
           <ChevronRight className="w-6 h-6" />

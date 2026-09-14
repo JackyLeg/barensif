@@ -11,9 +11,9 @@ const TrisaktiHeaderLogo: React.FC = () => (
       alt="Universitas Trisakti Logo"
       className="h-9 w-auto object-contain brightness-0 invert"
     />
-    <span className="text-[10px] md:text-xs font-black font-poppins text-white tracking-[0.15em] uppercase leading-tight">
+    {/* <span className="text-[10px] md:text-xs font-black font-poppins text-white tracking-[0.15em] uppercase leading-tight">
       UNIVERSITAS<br />TRISAKTI
-    </span>
+    </span> */}
   </div>
 );
 
@@ -47,8 +47,8 @@ export const Navbar: React.FC = () => {
           ))}
         </nav>
 
-        {/* Right Hamburger Icon */}
-        <div className="flex items-center">
+        {/* Right Hamburger Icon (Mobile Only) */}
+        <div className="flex md:hidden items-center">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-1.5 text-white focus:outline-none hover:opacity-80 transition-opacity"

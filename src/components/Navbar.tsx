@@ -7,13 +7,10 @@ import { Menu, X } from "lucide-react";
 const TrisaktiHeaderLogo: React.FC = () => (
   <div className="flex items-center gap-3">
     <img
-      src="/Universitas-Trisakti-Logo.png"
+      src="/Trisakti_Logo.svg"
       alt="Universitas Trisakti Logo"
       className="h-9 w-auto object-contain brightness-0 invert"
     />
-    {/* <span className="text-[10px] md:text-xs font-black font-poppins text-white tracking-[0.15em] uppercase leading-tight">
-      UNIVERSITAS<br />TRISAKTI
-    </span> */}
   </div>
 );
 
@@ -29,29 +26,31 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 pt-4 px-4 pb-2 bg-transparent">
       <div className="max-w-6xl mx-auto bg-[#0067C5] rounded-full shadow-lg px-8 py-3.5 flex items-center justify-between">
-        {/* Brand Logo */}
-        <a href="#" className="flex items-center">
-          <TrisaktiHeaderLogo />
-        </a>
+        {/* Brand Logo (Left Side) */}
+        <div className="flex-1 flex justify-start items-center">
+          <a href="#" className="flex items-center">
+            <TrisaktiHeaderLogo />
+          </a>
+        </div>
 
-        {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-16">
+        {/* Desktop Links (Centered in Middle) */}
+        <nav className="hidden md:flex items-center gap-12 lg:gap-16 justify-center">
           {navLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="text-white font-poppins font-bold text-sm tracking-[0.2em] hover:opacity-80 transition-opacity"
+              className="text-white font-poppins font-bold text-sm tracking-[0.2em] hover:opacity-80 transition-opacity whitespace-nowrap"
             >
               {link.name}
             </a>
           ))}
         </nav>
 
-        {/* Right Hamburger Icon (Mobile Only) */}
-        <div className="flex md:hidden items-center">
+        {/* Right Spacer (Desktop) / Hamburger Button (Mobile) */}
+        <div className="flex-1 flex justify-end items-center">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 text-white focus:outline-none hover:opacity-80 transition-opacity"
+            className="p-1.5 text-white focus:outline-none hover:opacity-80 transition-opacity md:hidden"
             aria-label="Menu Toggle"
           >
             {mobileMenuOpen ? (

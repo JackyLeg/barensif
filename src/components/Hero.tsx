@@ -21,7 +21,7 @@ export const Hero: React.FC = () => {
           {/* Trisakti Logo & Name */}
           <div className="flex flex-col items-start mb-6">
             <img
-              src="/Universitas-Trisakti-Logo.png"
+              src="/Trisakti_Logo.svg"
               alt="Universitas Trisakti Logo"
               className="w-28 md:w-36 h-auto object-contain mb-4 drop-shadow-md brightness-0 invert"
             />
